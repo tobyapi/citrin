@@ -1,0 +1,17 @@
+name: citrin
+version: 0.1.0
+
+authors:
+  - tobias <landofscala@gmail.com>
+
+targets:
+  citrin:
+    main: src/citrin.cr
+
+crystal: 0.22.0
+
+license: MIT
+
+dependencies:
+  crecto:
+    github: fridgerator/crecto
