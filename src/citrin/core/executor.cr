@@ -30,7 +30,7 @@ module Citrin::Core
         if line.include? "Execute: "
           time, milisec = line.split('.')
           h,m,s = time.split(':').map { |e| e.to_i }
-          result = Time::Span.new(h, m, s, milisec.to_i)
+          result = Time::Span.new(0, h, m, s, milisec.to_i)
         end
       end
       result
