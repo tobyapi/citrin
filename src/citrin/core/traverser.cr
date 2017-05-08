@@ -6,13 +6,14 @@ module Citrin::Core
       queue = Array(String).new
       queue << root_path
 
-      until (current = queue.first).nil?
+      until (current = queue.first?).nil?
         queue.shift
-
+        
         if File.file? current
           result << current
         else
           Dir.foreach(current) do |entry|
+            next if entry == "." || entry == ".."
             queue << current + '/' + entry
           end
         end
