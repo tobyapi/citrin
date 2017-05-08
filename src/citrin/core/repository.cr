@@ -19,7 +19,7 @@ module Citrin::Core
     schema "results" do
       field :run_id, Int32
       field :file_path, String
-      field :time, Time::Span
+      field :time, String
     end
   end
 end
