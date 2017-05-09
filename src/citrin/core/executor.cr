@@ -1,6 +1,9 @@
+require "../utils/shell_command"
+
 module Citrin::Core
   class Executor
-
+    include Citrin::Utils
+    
     def run_all_test(paths)
       result = Hash(String, Time::Span).new
       paths.each do |path|
@@ -11,17 +14,8 @@ module Citrin::Core
     end
 
     def run_test(path)
-      stdout, stderr = IO::Memory.new, IO::Memory.new
-      status = Process.run(command(path), shell: true, output: stdout, error: stderr)
-                      .exit_code
-
-      raise stderr if status != 0
-
-      get_time(output.to_s)
-    end
-
-    def command(path)
-      "crystal spec #{path} --time"
+      result = Shell.run "crystal spec #{path} --time"
+      get_time result
     end
 
     def get_time(output)
