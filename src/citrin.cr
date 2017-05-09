@@ -1,5 +1,3 @@
-require "./citrin/*"
+require "kemal"
 
-module Citrin
-  # TODO Put your code here
-end
+Kemal.run
