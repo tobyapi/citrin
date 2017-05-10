@@ -1,5 +1,6 @@
 require "json"
 require "kemal"
+require "./citrin/core/*"
 require "./citrin/utils/*"
 
 include Citrin::Utils
