@@ -3,6 +3,7 @@ require "kemal"
 require "./citrin/core/*"
 require "./citrin/utils/*"
 
+include Citrin::Core
 include Citrin::Utils
 
 get "/" do
