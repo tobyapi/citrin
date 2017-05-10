@@ -5,7 +5,7 @@ module Citrin::Core
       result = Array(String).new
       queue = Array(String).new
       queue << root_path
-
+      
       until (current = queue.first?).nil?
         queue.shift
         

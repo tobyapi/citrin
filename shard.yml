@@ -20,3 +20,7 @@ dependencies:
   kemal:
     github: kemalcr/kemal
     branch: master
+    
+  mysql:
+    github: crystal-lang/crystal-mysql
+    branch: master
