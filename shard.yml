@@ -24,3 +24,7 @@ dependencies:
   mysql:
     github: crystal-lang/crystal-mysql
     branch: master
+    
+  docker:
+    github: TobiasGSmollett/docker.cr
+    branch: develop

@@ -2,6 +2,7 @@ require "json"
 require "kemal"
 require "./citrin/core/*"
 require "./citrin/utils/*"
+require "docker"
 
 include Citrin::Core
 include Citrin::Utils
@@ -15,9 +16,14 @@ post "/push" do |env|
   name = repository["name"].as(String)
   clone_url = repository["clone_url"].as(String)
 
-  Dir.cd("../")  
-  Git.clone clone_url
-  Dir.cd(name)
+  #Dir.cd("../")
+  #Git.clone clone_url
+  #Dir.cd(name)
+  
+  Docker::Container.create("alpine")
+  container = Docker.client.containers(all: true).first
+  container.start
+  container.exec "git clone #{clone_url}"
 
   paths = Traverser.new.all_file_path "spec"
   paths.select! { |path| !/_spec.cr/.match(path).nil?  }
