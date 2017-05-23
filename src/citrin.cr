@@ -20,8 +20,8 @@ post "/push" do |env|
   #Git.clone clone_url
   #Dir.cd(name)
   
-  Docker::Container.create("alpine")
-  container = Docker.client.containers(all: true).first
+  container_id = Docker::Container.create("docker.io/crystallang/crystal")
+  container = Docker.client.containers(filter: {"id" => container_id[0,12]}).first
   container.start
   container.exec "git clone #{clone_url}"
 
