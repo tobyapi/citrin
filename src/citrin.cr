@@ -20,9 +20,9 @@ post "/push" do |env|
   #Git.clone clone_url
   #Dir.cd(name)
   
-  container_id = JSON.parse(Docker::Container.create("docker.io/crystallang/crystal").body)["Id"]
+  container_id = JSON.parse(Docker::Container.create("docker.io/crystallang/crystal").body)
   id = Array(String).new
-  id << container_id
+  id << container_id["id"].to_s
   container = Docker.client.containers(filters: {"id" => id}).first
   container.start
   container.exec "git clone #{clone_url}"
