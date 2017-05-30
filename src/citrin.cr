@@ -22,13 +22,13 @@ post "/push" do |env|
   
   container_id = JSON.parse(Docker::Container.create("docker.io/crystallang/crystal").body)
   id = Array(String).new
-  id << container_id["id"].to_s
-  container = Docker.client.containers(filters: {"id" => id}).first
+  id << container_id["Id"].to_s[0,12]
+  container = Docker.client.containers(all: true, filters: {"id" => id}).first
   container.start
-  container.exec "git clone #{clone_url}"
+  container.exec "git", "clone", clone_url
 
   paths = Traverser.new.all_file_path "spec"
-  paths.select! { |path| !/_spec.cr/.match(path).nil?  }
+  paths.select! { |path| !/_spec.cr/.match(path).nil? }
   result = Executor.new.run_all_test paths
   
   Dir.cd("../")
