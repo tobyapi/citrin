@@ -1,9 +1,15 @@
 require "../utils/shell_command"
+require "docker"
 
 module Citrin::Core
   class Executor
     include Citrin::Utils
-    
+
+    @name : String
+    @container : Docker::Container
+
+    def initialize(@name, @container); end
+
     def run_all_test(paths)
       result = Hash(String, Time::Span).new
       paths.each do |path|
@@ -14,7 +20,7 @@ module Citrin::Core
 
     def run_test(path)
       begin
-        result = Shell.run "crystal spec #{path} --time"
+        result = @container.exec "bash", "-c", "cd #{@name} && crystal spec #{path} --time"
         get_time result
       rescue
         Time::Span::MaxValue

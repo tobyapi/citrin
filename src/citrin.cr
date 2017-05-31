@@ -11,28 +11,23 @@ get "/" do
   "Hello World!"
 end
 
-post "/push" do |env|  
+post "/push" do |env|
   repository = env.params.json["repository"].as(Hash(String, JSON::Type))
   name = repository["name"].as(String)
   clone_url = repository["clone_url"].as(String)
-
-  #Dir.cd("../")
-  #Git.clone clone_url
-  #Dir.cd(name)
-  
-  container_id = JSON.parse(Docker::Container.create("docker.io/crystallang/crystal").body)
-  id = Array(String).new
-  id << container_id["Id"].to_s[0,12]
+  response = Docker::Container.create("docker.io/crystallang/crystal")
+  container_id = JSON.parse(response.body)["Id"].to_s[0,12]
+  id = Array(String).new(1){ container_id }
   container = Docker.client.containers(all: true, filters: {"id" => id}).first
   container.start
   container.exec "git", "clone", clone_url
-
-  paths = Traverser.new.all_file_path "spec"
-  paths.select! { |path| !/_spec.cr/.match(path).nil? }
-  result = Executor.new.run_all_test paths
-  
-  Dir.cd("../")
-  Shell.run("rm -rf #{name}")
+  paths = container.exec "bash", "-c", "cd #{name} && find spec -name \"*_spec.cr\" -type f"
+  result = Executor.new(name, container).run_all_test paths.lines
+  puts result
+  #Dir.cd("../")
+  #Shell.run("rm -rf #{name}")
+  container.stop
+  container.remove
 
   {result: "success"}.to_json
 end
