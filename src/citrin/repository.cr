@@ -5,10 +5,17 @@ module Citrin::Core
   #module Repo extend Crecto::Repo
     #config do |conf|
       #conf.adapter = Crecto::Adapters::Mysql
+      
+      #ENV["DB"] ||= "citrin"
       #conf.database = ENV["DB"]
+      
+      #ENV["HOST"] ||= "localhost"
       #conf.hostname = ENV["HOST"]
+      
       #conf.username = ENV["USER"]
       #conf.password = ENV["PASS"]
+      
+      #ENV["PORT"] ||= 5342
       #conf.port = ENV["PORT"].to_i
     #end
   #end
