@@ -1,10 +1,7 @@
-require "../utils/shell_command"
 require "docker"
 
-module Citrin::Core
+module Citrin
   class Executor
-    include Citrin::Utils
-
     @name : String
     @container : Docker::Container
 

@@ -1,11 +1,9 @@
 require "json"
 require "kemal"
-require "./citrin/core/*"
-require "./citrin/utils/*"
+require "./citrin/*"
 require "docker"
 
-include Citrin::Core
-include Citrin::Utils
+include Citrin
 
 get "/" do
   "Hello World!"
@@ -23,9 +21,6 @@ post "/push" do |env|
   container.exec "git", "clone", clone_url
   paths = container.exec "bash", "-c", "cd #{name} && find spec -name \"*_spec.cr\" -type f"
   result = Executor.new(name, container).run_all_test paths.lines
-  puts result
-  #Dir.cd("../")
-  #Shell.run("rm -rf #{name}")
   container.stop
   container.remove
 
